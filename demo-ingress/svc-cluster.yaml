@@ -1,0 +1,17 @@
+# web-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hostname2
+  namespace: default
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  ports:
+  - name: host2
+    port: 8081
+    protocol: TCP
+    targetPort: 9376
+  selector:
+    app: hostname2
+  type: ClusterIP

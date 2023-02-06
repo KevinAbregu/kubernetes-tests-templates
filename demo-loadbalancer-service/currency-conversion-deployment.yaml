@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: currency-conversion
+  name: currency-conversion
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      lbtype: external
+  template:
+    metadata:
+      labels:
+        lbtype: external
+        app: currency-conversion
+    spec:
+      containers:
+      - env:
+        - name: CURRENCY_EXCHANGE_URI
+          valueFrom:
+            configMapKeyRef:
+              key: CURRENCY_EXCHANGE_URI
+              name: currency-conversion-config-55nx
+        image: europe-west4-docker.pkg.dev/service-project-kvn-01/test-artifact-registry/conversion-image@sha256:fbbf86231322d3dd562ef1b251f1cdb0f398d7550072f9eec63aed2e4b056146
+        imagePullPolicy: IfNotPresent
+        name: conversion-image-sha256-1
+        ports:
+          - containerPort: 8100
+            name: "8100-port"
+

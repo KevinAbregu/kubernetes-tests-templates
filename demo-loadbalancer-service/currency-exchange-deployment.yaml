@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: currency-exchange
+  name: currency-exchange
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      lbtype: external
+  template:
+    metadata:
+      labels:
+        lbtype: external
+        app: currency-exchange
+    spec:
+      containers:
+      - image: europe-west4-docker.pkg.dev/service-project-kvn-01/test-artifact-registry/exchange-image:0.0.12-SNAPSHOT
+        imagePullPolicy: IfNotPresent
+        name: exchange-image
+        ports:
+          - containerPort: 8000
+            name: "8000-port"
